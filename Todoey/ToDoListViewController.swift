@@ -10,7 +10,7 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
 
-    let itemArray = ["things1", "things2", "things3"]
+    var itemArray = ["things1", "things2", "things3"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +48,32 @@ class ToDoListViewController: UITableViewController {
     }
     
     
-
+    //MARK - Add New Items
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField : UITextField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
+            let newCategory = textField.text!
+            self.itemArray.append(newCategory)
+            
+            self.tableView.reloadData()
+            
+        }
+        
+        alert.addTextField { (text) in
+            text.placeholder = "Create new category"
+            textField = text
+        }
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
 
 }
 
