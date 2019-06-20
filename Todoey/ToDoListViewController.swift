@@ -10,13 +10,20 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
 
-    var itemArray = ["things1", "things2", "things3"]
+    var itemArray = [""]
+    
+    let userDefault = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let items = userDefault.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
+        
     }
     
-    //MARK - Tableview Datasource Methods
+    //MARK: - Tableview Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
     }
@@ -32,7 +39,7 @@ class ToDoListViewController: UITableViewController {
     
     
     
-    //MARK - TableView Delegate Method
+    //MARK: - TableView Delegate Method
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -48,7 +55,7 @@ class ToDoListViewController: UITableViewController {
     }
     
     
-    //MARK - Add New Items
+    //MARK: - Add New Items
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
@@ -57,11 +64,10 @@ class ToDoListViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
-            let newCategory = textField.text!
-            self.itemArray.append(newCategory)
+            self.itemArray.append(textField.text!)
             
+            self.userDefault.set(self.itemArray, forKey: "TodoListArray" )
             self.tableView.reloadData()
-            
         }
         
         alert.addTextField { (text) in
